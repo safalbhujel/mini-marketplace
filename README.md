@@ -14,9 +14,9 @@ A simple web application to buy, sell, and discover items in your community. Bui
 
 ## 🛠️ Tech Stack
 
-- **Backend:** PHP
-- **Database:** MySQL
 - **Frontend:** HTML, CSS
+- **Database:** MySQL
+- **Backend:** PHP
 
 ## 📋 Requirements
 
