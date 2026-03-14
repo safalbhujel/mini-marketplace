@@ -57,7 +57,7 @@ $initials = strtoupper(substr($_SESSION['user_name'], 0, 1));
 <body>
 
 <nav class="navbar">
-    <span class="brand">🛍️ Mini Marketplace</span>
+    <a href="index.php" class="brand">🛍️ Mini Marketplace</a>
     <a href="dashboard.php" class="active">Dashboard</a>
     <a href="add_item.php">Add Item</a>
     <a href="view_items.php">Marketplace</a>

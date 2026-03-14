@@ -66,6 +66,12 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
     color: #fff;
     margin-right: auto;
     letter-spacing: -.3px;
+    text-decoration: none;
+}
+.navbar a.brand:hover {
+    color: #fff;
+    text-decoration: none;
+    background: transparent;
 }
 .navbar a {
     color: rgba(255,255,255,.85);

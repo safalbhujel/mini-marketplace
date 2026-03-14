@@ -45,15 +45,17 @@ $is_owner = ((int)$item['user_id'] === (int)$uid) || $is_admin;
 <body>
 
 <nav class="navbar">
-    <span class="brand">🛍️ Mini Marketplace</span>
+    <a href="index.php" class="brand">🛍️ Mini Marketplace</a>
     <?php if (isset($_SESSION['user_id'])): ?>
         <a href="dashboard.php">Dashboard</a>
         <a href="view_items.php" class="active">Marketplace</a>
         <?php if ($is_admin): ?><a href="admin_panel.php">Admin</a><?php endif; ?>
         <a href="logout.php">Logout</a>
     <?php else: ?>
-        <a href="view_items.php" class="active">Marketplace</a>
+        <a href="index.php">Home</a>
+        <a href="view_items.php" class="active">Browse</a>
         <a href="login.php">Login</a>
+        <a href="register.php">Register</a>
     <?php endif; ?>
 </nav>
 

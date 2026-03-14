@@ -40,7 +40,7 @@ $items = mysqli_query($conn,
 <body>
 
 <nav class="navbar">
-    <span class="brand">🛍️ Mini Marketplace</span>
+    <a href="index.php" class="brand">🛍️ Mini Marketplace</a>
     <a href="dashboard.php">Dashboard</a>
     <a href="view_items.php">Marketplace</a>
     <a href="admin_panel.php" class="active">Admin</a>
@@ -106,7 +106,7 @@ $items = mysqli_query($conn,
                 <td>Rs <?= number_format((float)$item['price'], 2) ?></td>
                 <td><?= htmlspecialchars($item['seller_name']) ?></td>
                 <td>
-                    <a href="item_details.php?id=<?= (int)$item['id'] ?>"
+                    <a href="view_image.php?id=<?= (int)$item['id'] ?><?= !empty($item['image']) ? '&img=' . urlencode($item['image']) : '' ?>"
                        class="btn btn-secondary btn-sm">👁 View</a>
                     <a href="delete_item.php?id=<?= (int)$item['id'] ?>"
                        class="btn btn-danger btn-sm"

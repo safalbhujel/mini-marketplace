@@ -57,7 +57,19 @@ if (isset($_POST['add_item'])) {
                 $message = "Item listed successfully!";
                 $success = true;
             } else {
-                $message = "Database error. Please try again.";
+                $err = mysqli_error($conn);
+                // Auto-fix: "Duplicate entry '0' for key 'PRIMARY'" = missing AUTO_INCREMENT
+                if (strpos($err, "Duplicate entry '0' for key 'PRIMARY'") !== false) {
+                    @mysqli_query($conn, "ALTER TABLE items MODIFY id INT NOT NULL AUTO_INCREMENT");
+                    if (mysqli_query($conn, $sql)) {
+                        $message = "Item listed successfully!";
+                        $success = true;
+                    } else {
+                        $message = "Database error. Please try again.";
+                    }
+                } else {
+                    $message = "Database error. Please try again.";
+                }
             }
         }
     }
@@ -76,7 +88,7 @@ $is_admin = ($_SESSION['user_role'] ?? '') === 'admin';
 <body>
 
 <nav class="navbar">
-    <span class="brand">🛍️ Mini Marketplace</span>
+    <a href="index.php" class="brand">🛍️ Mini Marketplace</a>
     <a href="dashboard.php">Dashboard</a>
     <a href="add_item.php" class="active">Add Item</a>
     <a href="view_items.php">Marketplace</a>

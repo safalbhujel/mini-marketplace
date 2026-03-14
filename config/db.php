@@ -1,12 +1,12 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "marketplace_db";
+$host = "localhost";      
+$dbname = "marketplace_db";  
+$username = "root"; 
+$password = ""; 
 
-$conn = mysqli_connect($host, $user, $password, $dbname);
+$conn = mysqli_connect($host, $username, $password, $dbname);
+
 if (!$conn) {
-    die("Connection Failed: " . mysqli_connect_error());
+    die("Database connection failed. Please ensure MySQL is running and the database is set up. Run config/schema.sql to create the database and tables.");
 }
-
 ?>

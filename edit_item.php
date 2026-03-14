@@ -103,7 +103,7 @@ if (isset($_POST['update'])) {
 <body>
 
 <nav class="navbar">
-    <span class="brand">🛍️ Mini Marketplace</span>
+    <a href="index.php" class="brand">🛍️ Mini Marketplace</a>
     <a href="dashboard.php">Dashboard</a>
     <a href="view_items.php" class="active">Marketplace</a>
     <?php if ($is_admin): ?><a href="admin_panel.php">Admin</a><?php endif; ?>

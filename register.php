@@ -11,9 +11,9 @@ $message = '';
 $success = false;
 
 if (isset($_POST['register'])) {
-    $name     = trim($_POST['name']     ?? '');
-    $email    = trim($_POST['email']    ?? '');
-    $password = $_POST['password'] ?? '';
+    $name     = trim($_POST['name'] ?? '');
+    $email    = strtolower(trim($_POST['email'] ?? ''));
+    $password = trim($_POST['password'] ?? '');
 
     // Validate BEFORE hashing
     if (empty($name) || empty($email) || empty($password)) {
@@ -25,16 +25,34 @@ if (isset($_POST['register'])) {
         $email_safe = mysqli_real_escape_string($conn, $email);
 
         $check = mysqli_query($conn, "SELECT id FROM users WHERE email='$email_safe'");
-        if (mysqli_num_rows($check) > 0) {
+        if ($check === false) {
+            $message = "Database error: " . mysqli_error($conn);
+        } elseif (mysqli_num_rows($check) > 0) {
             $message = "An account with that email already exists!";
         } else {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-            mysqli_query($conn,
+            $hash      = password_hash($password, PASSWORD_DEFAULT);
+            $hash_safe = mysqli_real_escape_string($conn, $hash);
+            $insert = mysqli_query($conn,
                 "INSERT INTO users (name, email, password, role)
-                 VALUES ('$name_safe', '$email_safe', '$hash', 'user')"
+                 VALUES ('$name_safe', '$email_safe', '$hash_safe', 'user')"
             );
-            $message = "Registration successful!";
-            $success = true;
+            if (!$insert) {
+                $err = mysqli_error($conn);
+                // Auto-fix: "Duplicate entry '0' for key 'PRIMARY'" = missing AUTO_INCREMENT
+                if (strpos($err, "Duplicate entry '0' for key 'PRIMARY'") !== false) {
+                    @mysqli_query($conn, "ALTER TABLE users MODIFY id INT NOT NULL AUTO_INCREMENT");
+                    $insert = mysqli_query($conn,
+                        "INSERT INTO users (name, email, password, role)
+                         VALUES ('$name_safe', '$email_safe', '$hash_safe', 'user')"
+                    );
+                }
+            }
+            if (!$insert) {
+                $message = "Database error: " . mysqli_error($conn);
+            } else {
+                $message = "Registration successful! Sign in with your email and password.";
+                $success = true;
+            }
         }
     }
 }
