@@ -21,8 +21,21 @@ $total_items  = $total_row['total'] ?? 0;
 
 $is_admin = ($_SESSION['user_role'] ?? '') === 'admin';
 
+// User display name (session-first, DB fallback)
+$user_name = trim($_SESSION['user_name'] ?? '');
+if ($user_name === '') {
+    $user_q = mysqli_query($conn, "SELECT name FROM users WHERE id = $uid LIMIT 1");
+    if ($user_q && mysqli_num_rows($user_q) > 0) {
+        $user_row = mysqli_fetch_assoc($user_q);
+        $user_name = trim($user_row['name'] ?? '');
+    }
+}
+if ($user_name === '') {
+    $user_name = 'User';
+}
+
 // Get initials for avatar
-$initials = strtoupper(substr($_SESSION['user_name'], 0, 1));
+$initials = strtoupper(substr($user_name, 0, 1));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +84,7 @@ $initials = strtoupper(substr($_SESSION['user_name'], 0, 1));
     <div class="welcome-banner">
         <div class="avatar"><?= htmlspecialchars($initials) ?></div>
         <div>
-            <h1>Welcome, <?= htmlspecialchars($_SESSION['user_name']) ?>! 👋</h1>
+            <h1>Welcome, <?= htmlspecialchars($user_name) ?>! 👋</h1>
             <p><?= $is_admin ? 'You are logged in as <strong>Administrator</strong>.' : 'Manage your listings and explore the marketplace.' ?></p>
         </div>
     </div>
